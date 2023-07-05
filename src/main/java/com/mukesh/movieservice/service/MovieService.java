@@ -1,5 +1,7 @@
 package com.mukesh.movieservice.service;
 
+import com.mukesh.movieservice.exception.InvalidDataException;
+import com.mukesh.movieservice.exception.NotFoundException;
 import com.mukesh.movieservice.model.Movie;
 import com.mukesh.movieservice.repo.MovieRepository;
 import jakarta.transaction.Transactional;
@@ -14,18 +16,18 @@ public class MovieService {
 
     public Movie createMovie(Movie movie){
         if(movie == null){
-            throw new RuntimeException("Invalid Movie");
+            throw new InvalidDataException("Invalid Movie : null");
         }
         return movieRepository.save(movie);
     }
     public  Movie getMovieById(Long id){
         return  movieRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Movie not found this id"+ id));
+                .orElseThrow(()->new NotFoundException("Movie not found this id: "+ id));
     }
 
     public void updateMovie(Long id,Movie updateMovie){
         if(updateMovie == null || id ==null){
-            throw new RuntimeException("Invalid Movie");
+            throw new InvalidDataException("Invalid Movie : null");
         }
         if(movieRepository.existsById(id)){
            Movie movie= movieRepository.getReferenceById(id);
@@ -34,7 +36,7 @@ public class MovieService {
            movie.setActors(updateMovie.getActors());
            movieRepository.save(movie);
         }else{
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found this id :"+ id);
         }
     }
 
@@ -42,7 +44,7 @@ public class MovieService {
         if(movieRepository.existsById(id)){
             movieRepository.deleteById(id);
         }else{
-            throw new RuntimeException("Movie not found");
+            throw new NotFoundException("Movie not found this id"+ id);
         }
     }
 

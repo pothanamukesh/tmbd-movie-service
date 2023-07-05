@@ -17,7 +17,7 @@ public class MovieController {
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
         Movie movie = movieService.getMovieById(id);
-        log.info("Return movie with id:{}",  id);
+        log.info("Return movie with id:{}", id);
         return ResponseEntity.ok(movie);
     }
 
@@ -30,7 +30,7 @@ public class MovieController {
 
     @PutMapping("/{id}")
     public void updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
-        log.info("Update movie with id:{}",id);
+        log.info("Update movie with id:{}", id);
         movieService.updateMovie(id, movie);
     }
 
